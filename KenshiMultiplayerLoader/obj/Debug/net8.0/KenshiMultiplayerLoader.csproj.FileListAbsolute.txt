@@ -1,0 +1,14 @@
+C:\Users\thewi\source\repos\KenshiMultiplayerLoader\KenshiMultiplayerLoader\obj\Debug\net8.0\KenshiMultiplayerLoader.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\thewi\source\repos\KenshiMultiplayerLoader\KenshiMultiplayerLoader\obj\Debug\net8.0\KenshiMultiplayerLoader.AssemblyInfoInputs.cache
+C:\Users\thewi\source\repos\KenshiMultiplayerLoader\KenshiMultiplayerLoader\obj\Debug\net8.0\KenshiMultiplayerLoader.AssemblyInfo.cs
+C:\Users\thewi\source\repos\KenshiMultiplayerLoader\KenshiMultiplayerLoader\obj\Debug\net8.0\KenshiMultiplayerLoader.csproj.CoreCompileInputs.cache
+C:\Users\thewi\source\repos\KenshiMultiplayerLoader\KenshiMultiplayerLoader\bin\Debug\net8.0\KenshiMultiplayerLoader.exe
+C:\Users\thewi\source\repos\KenshiMultiplayerLoader\KenshiMultiplayerLoader\bin\Debug\net8.0\KenshiMultiplayerLoader.deps.json
+C:\Users\thewi\source\repos\KenshiMultiplayerLoader\KenshiMultiplayerLoader\bin\Debug\net8.0\KenshiMultiplayerLoader.runtimeconfig.json
+C:\Users\thewi\source\repos\KenshiMultiplayerLoader\KenshiMultiplayerLoader\bin\Debug\net8.0\KenshiMultiplayerLoader.dll
+C:\Users\thewi\source\repos\KenshiMultiplayerLoader\KenshiMultiplayerLoader\bin\Debug\net8.0\KenshiMultiplayerLoader.pdb
+C:\Users\thewi\source\repos\KenshiMultiplayerLoader\KenshiMultiplayerLoader\obj\Debug\net8.0\KenshiMultiplayerLoader.dll
+C:\Users\thewi\source\repos\KenshiMultiplayerLoader\KenshiMultiplayerLoader\obj\Debug\net8.0\refint\KenshiMultiplayerLoader.dll
+C:\Users\thewi\source\repos\KenshiMultiplayerLoader\KenshiMultiplayerLoader\obj\Debug\net8.0\KenshiMultiplayerLoader.pdb
+C:\Users\thewi\source\repos\KenshiMultiplayerLoader\KenshiMultiplayerLoader\obj\Debug\net8.0\KenshiMultiplayerLoader.genruntimeconfig.cache
+C:\Users\thewi\source\repos\KenshiMultiplayerLoader\KenshiMultiplayerLoader\obj\Debug\net8.0\ref\KenshiMultiplayerLoader.dll
