@@ -141,9 +141,18 @@ namespace KenshiMultiplayerLoader.NETWORK
                     var response = ReceiveMessage();
                     if (response != null && response.Type == MessageType.Login)
                     {
-                        if (response.Data.TryGetValue("success", out object success) && 
-                            (bool)success &&
-                            response.Data.TryGetValue("sessionId", out object sessionId) && 
+                        bool isSuccess = false;
+                        if (response.Data.TryGetValue("success", out object success))
+                        {
+                            // Handle both JsonElement and bool types
+                            if (success is JsonElement jsonElement)
+                                isSuccess = jsonElement.GetBoolean();
+                            else if (success is bool boolValue)
+                                isSuccess = boolValue;
+                        }
+
+                        if (isSuccess &&
+                            response.Data.TryGetValue("sessionId", out object sessionId) &&
                             sessionId != null)
                         {
                             return sessionId.ToString();

@@ -90,8 +90,8 @@ namespace KenshiMultiplayerLoader.UI
         {
             if (!message.Data.TryGetValue("error", out object errorContent))
                 return;
-                
-            string errorMessage = errorContent.ToString();
+
+            string errorMessage = errorContent?.ToString() ?? "";
             Logger.Log($"Error: {errorMessage}");
             notificationMessages.Add($"Error: {errorMessage}");
             TrimNotifications();
@@ -101,8 +101,8 @@ namespace KenshiMultiplayerLoader.UI
         {
             if (!message.Data.TryGetValue("message", out object notificationContent))
                 return;
-                
-            string notification = notificationContent.ToString();
+
+            string notification = notificationContent?.ToString() ?? "";
             Logger.Log($"Notification: {notification}");
             notificationMessages.Add(notification);
             TrimNotifications();
@@ -142,10 +142,7 @@ namespace KenshiMultiplayerLoader.UI
         
         public void RemovePlayerInfo(string playerId)
         {
-            if (playerInfos.ContainsKey(playerId))
-            {
-                playerInfos.Remove(playerId);
-            }
+            playerInfos.Remove(playerId);
         }
         
         // The following methods would be called by your Kenshi UI integration code
