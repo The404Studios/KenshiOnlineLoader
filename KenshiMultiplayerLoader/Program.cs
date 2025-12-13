@@ -79,7 +79,7 @@ namespace KenshiMultiplayer
                             
                         case "3":
                             Console.Write("Enter chat message: ");
-                            string message = Console.ReadLine();
+                            string message = Console.ReadLine() ?? "";
                             clientManager.SendChatMessage(message);
                             break;
                             
