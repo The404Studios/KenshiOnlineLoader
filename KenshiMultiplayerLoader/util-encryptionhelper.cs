@@ -44,7 +44,7 @@ namespace KenshiMultiplayer
         private static void GenerateNewKeys()
         {
             // Generate a random encryption key
-            using (var rng = new RNGCryptoServiceProvider())
+            using (var rng = RandomNumberGenerator.Create())
             {
                 var keyBytes = new byte[32]; // 256-bit key
                 rng.GetBytes(keyBytes);
@@ -75,7 +75,7 @@ namespace KenshiMultiplayer
             {
                 using (Aes aes = Aes.Create())
                 {
-                    aes.Key = Encoding.UTF8.GetBytes(encryptionKey);
+                    aes.Key = Convert.FromBase64String(encryptionKey);
                     aes.IV = initVector;
                     aes.Mode = CipherMode.CBC;
                     aes.Padding = PaddingMode.PKCS7;
@@ -110,7 +110,7 @@ namespace KenshiMultiplayer
 
                 using (Aes aes = Aes.Create())
                 {
-                    aes.Key = Encoding.UTF8.GetBytes(encryptionKey);
+                    aes.Key = Convert.FromBase64String(encryptionKey);
                     aes.IV = initVector;
                     aes.Mode = CipherMode.CBC;
                     aes.Padding = PaddingMode.PKCS7;
@@ -142,7 +142,7 @@ namespace KenshiMultiplayer
         public static (string hash, string salt) HashPassword(string password)
         {
             byte[] salt = new byte[16];
-            using (var rng = new RNGCryptoServiceProvider())
+            using (var rng = RandomNumberGenerator.Create())
             {
                 rng.GetBytes(salt);
             }
@@ -163,7 +163,7 @@ namespace KenshiMultiplayer
 
         private static string ComputeHash(string password, byte[] salt)
         {
-            using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000))
+            using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000, HashAlgorithmName.SHA256))
             {
                 byte[] hash = pbkdf2.GetBytes(32);
                 return Convert.ToBase64String(hash);
