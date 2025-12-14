@@ -18,24 +18,24 @@ namespace KenshiMultiplayerLoader.CLIENT
         private DateTime lastPositionUpdate = DateTime.MinValue;
         private TimeSpan positionUpdateInterval = TimeSpan.FromMilliseconds(100); // 10 updates per second max
         
-        public void UpdatePosition(string playerId, float x, float y, float z, NetworkHandler networkHandler)
+        public void UpdatePosition(string playerId, float x, float y, float z, NetworkHandler networkHandler, string sessionId = null)
         {
             // Rate limit position updates
             if (DateTime.Now - lastPositionUpdate < positionUpdateInterval)
                 return;
-                
+
             // Get the player's last known position
             if (!playerPositions.TryGetValue(playerId, out Position lastPosition))
             {
                 lastPosition = new Position(0, 0, 0);
                 playerPositions[playerId] = lastPosition;
             }
-            
+
             // Check if position has changed significantly
             float dx = Math.Abs(x - lastPosition.X);
             float dy = Math.Abs(y - lastPosition.Y);
             float dz = Math.Abs(z - lastPosition.Z);
-            
+
             if (dx > positionUpdateThreshold || dy > positionUpdateThreshold || dz > positionUpdateThreshold)
             {
                 var position = new Position(x, y, z);
@@ -43,55 +43,57 @@ namespace KenshiMultiplayerLoader.CLIENT
                 {
                     Type = MessageType.Position,
                     PlayerId = playerId,
+                    SessionId = sessionId,
                     Data = JsonSerializer.Deserialize<Dictionary<string, object>>(JsonSerializer.Serialize(position))
                 };
-                
+
                 networkHandler.SendMessage(message);
-                
+
                 // Update last known position and timestamp
                 playerPositions[playerId] = position;
                 lastPositionUpdate = DateTime.Now;
             }
         }
         
-        public void UpdateHealth(string playerId, int current, int max, NetworkHandler networkHandler)
+        public void UpdateHealth(string playerId, int current, int max, NetworkHandler networkHandler, string sessionId = null)
         {
             // Get the player's last known health
             if (!playerHealth.TryGetValue(playerId, out HealthStatus lastHealth))
             {
                 lastHealth = new HealthStatus { CurrentHealth = current, MaxHealth = max };
                 playerHealth[playerId] = lastHealth;
-                
+
                 // Always send initial health update
-                SendHealthUpdate(playerId, current, max, networkHandler);
+                SendHealthUpdate(playerId, current, max, networkHandler, sessionId);
                 return;
             }
-            
+
             // Check if health has changed
             if (current != lastHealth.CurrentHealth || max != lastHealth.MaxHealth)
             {
-                SendHealthUpdate(playerId, current, max, networkHandler);
-                
+                SendHealthUpdate(playerId, current, max, networkHandler, sessionId);
+
                 // Update last known health
                 lastHealth.CurrentHealth = current;
                 lastHealth.MaxHealth = max;
             }
         }
-        
-        private void SendHealthUpdate(string playerId, int current, int max, NetworkHandler networkHandler)
+
+        private void SendHealthUpdate(string playerId, int current, int max, NetworkHandler networkHandler, string sessionId = null)
         {
             var healthStatus = new HealthStatus { CurrentHealth = current, MaxHealth = max };
             var message = new GameMessage
             {
                 Type = MessageType.Health,
                 PlayerId = playerId,
+                SessionId = sessionId,
                 Data = JsonSerializer.Deserialize<Dictionary<string, object>>(JsonSerializer.Serialize(healthStatus))
             };
-            
+
             networkHandler.SendMessage(message);
         }
         
-        public void UpdateInventory(string playerId, string itemName, int quantity, NetworkHandler networkHandler)
+        public void UpdateInventory(string playerId, string itemName, int quantity, NetworkHandler networkHandler, string sessionId = null)
         {
             // Make sure the player's inventory exists
             if (!playerInventories.TryGetValue(playerId, out var inventory))
@@ -99,13 +101,13 @@ namespace KenshiMultiplayerLoader.CLIENT
                 inventory = new Dictionary<string, InventoryItem>();
                 playerInventories[playerId] = inventory;
             }
-            
+
             // Create or update the item
             if (!inventory.TryGetValue(itemName, out var item))
             {
                 if (quantity <= 0)
                     return; // Don't create an item with zero or negative quantity
-                    
+
                 item = new InventoryItem(itemName, quantity);
                 inventory[itemName] = item;
             }
@@ -117,19 +119,20 @@ namespace KenshiMultiplayerLoader.CLIENT
                     inventory.Remove(itemName);
                 }
             }
-            
+
             // Send the update to the server
             var message = new GameMessage
             {
                 Type = MessageType.Inventory,
                 PlayerId = playerId,
+                SessionId = sessionId,
                 Data = JsonSerializer.Deserialize<Dictionary<string, object>>(JsonSerializer.Serialize(item))
             };
-            
+
             networkHandler.SendMessage(message);
         }
         
-        public void SendCombatAction(string playerId, string targetId, string actionType, string weaponId, NetworkHandler networkHandler)
+        public void SendCombatAction(string playerId, string targetId, string actionType, string weaponId, NetworkHandler networkHandler, string sessionId = null)
         {
             var combatAction = new CombatAction
             {
@@ -137,7 +140,7 @@ namespace KenshiMultiplayerLoader.CLIENT
                 Action = actionType,
                 WeaponId = weaponId
             };
-            
+
             // Add player position to combat action for validation
             if (playerPositions.TryGetValue(playerId, out Position pos))
             {
@@ -145,14 +148,15 @@ namespace KenshiMultiplayerLoader.CLIENT
                 combatAction.AttackerPosY = pos.Y;
                 combatAction.AttackerPosZ = pos.Z;
             }
-            
+
             var message = new GameMessage
             {
                 Type = MessageType.Combat,
                 PlayerId = playerId,
+                SessionId = sessionId,
                 Data = JsonSerializer.Deserialize<Dictionary<string, object>>(JsonSerializer.Serialize(combatAction))
             };
-            
+
             networkHandler.SendMessage(message);
         }
         

@@ -117,21 +117,22 @@ namespace KenshiMultiplayerLoader.UI
             }
         }
         
-        public void SendChatMessage(string content, NetworkHandler networkHandler, string playerId)
+        public void SendChatMessage(string content, NetworkHandler networkHandler, string playerId, string sessionId = null)
         {
             if (string.IsNullOrWhiteSpace(content))
                 return;
-                
+
             var message = new GameMessage
             {
                 Type = MessageType.Chat,
                 PlayerId = playerId,
+                SessionId = sessionId,
                 Data = new Dictionary<string, object>
                 {
                     { "message", content }
                 }
             };
-            
+
             networkHandler.SendMessage(message);
         }
         

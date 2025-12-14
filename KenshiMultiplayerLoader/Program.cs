@@ -50,10 +50,12 @@ namespace KenshiMultiplayer
                             Console.Write("Server IP (default 127.0.0.1): ");
                             string ip = Console.ReadLine();
                             if (string.IsNullOrWhiteSpace(ip)) ip = "127.0.0.1";
-                            
+
                             Console.Write("Server Port (default 5555): ");
                             string portStr = Console.ReadLine();
-                            int port = string.IsNullOrWhiteSpace(portStr) ? 5555 : int.Parse(portStr);
+                            int port = 5555;
+                            if (!string.IsNullOrWhiteSpace(portStr))
+                                int.TryParse(portStr, out port);
                             
                             Console.Write("Username: ");
                             string user = Console.ReadLine();
@@ -77,20 +79,23 @@ namespace KenshiMultiplayer
                             
                         case "3":
                             Console.Write("Enter chat message: ");
-                            string message = Console.ReadLine();
+                            string message = Console.ReadLine() ?? "";
                             clientManager.SendChatMessage(message);
                             break;
                             
                         case "4":
                             Console.Write("Enter X position: ");
-                            float x = float.Parse(Console.ReadLine() ?? "0");
-                            
+                            if (!float.TryParse(Console.ReadLine(), out float x))
+                                x = 0;
+
                             Console.Write("Enter Y position: ");
-                            float y = float.Parse(Console.ReadLine() ?? "0");
-                            
+                            if (!float.TryParse(Console.ReadLine(), out float y))
+                                y = 0;
+
                             Console.Write("Enter Z position: ");
-                            float z = float.Parse(Console.ReadLine() ?? "0");
-                            
+                            if (!float.TryParse(Console.ReadLine(), out float z))
+                                z = 0;
+
                             clientManager.SyncPlayerPosition(x, y, z);
                             Console.WriteLine($"Position updated to ({x}, {y}, {z})");
                             break;

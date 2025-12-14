@@ -117,39 +117,39 @@ namespace KenshiMultiplayerLoader.CLIENT
         {
             if (isConnected)
             {
-                stateSynchronizer.UpdatePosition(playerId, x, y, z, networkHandler);
+                stateSynchronizer.UpdatePosition(playerId, x, y, z, networkHandler, sessionId);
             }
         }
-        
+
         public void SyncPlayerHealth(int current, int max)
         {
             if (isConnected)
             {
-                stateSynchronizer.UpdateHealth(playerId, current, max, networkHandler);
+                stateSynchronizer.UpdateHealth(playerId, current, max, networkHandler, sessionId);
             }
         }
-        
+
         public void SyncInventoryChange(string itemName, int quantity)
         {
             if (isConnected)
             {
-                stateSynchronizer.UpdateInventory(playerId, itemName, quantity, networkHandler);
+                stateSynchronizer.UpdateInventory(playerId, itemName, quantity, networkHandler, sessionId);
             }
         }
-        
+
         public void PerformCombatAction(string targetId, string actionType, string weaponId = null)
         {
             if (isConnected)
             {
-                stateSynchronizer.SendCombatAction(playerId, targetId, actionType, weaponId, networkHandler);
+                stateSynchronizer.SendCombatAction(playerId, targetId, actionType, weaponId, networkHandler, sessionId);
             }
         }
-        
+
         public void SendChatMessage(string content)
         {
             if (isConnected)
             {
-                uiManager.SendChatMessage(content, networkHandler, playerId);
+                uiManager.SendChatMessage(content, networkHandler, playerId, sessionId);
             }
         }
         
